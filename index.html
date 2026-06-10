@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="اختبار القانون الدولي الخاص">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1e2029">
+ 
+    <title>اختبار تفاعلي: القانون الدولي الخاص</title>
+    <style>
+        body {
+            background-color: #22252d;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow-x: hidden;
+            overscroll-behavior-y: contain; 
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #1e2029;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+        }
+        header {
+            padding: 15px;
+            border-bottom: 1px solid #3b3f4a;
+            background-color: #2a2d38;
+        }
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .student-name {
+            font-size: 11px;
+            color: #ccc;
+            text-align: right;
+        }
+        .student-name span {
+            display: block;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 3px;
+        }
+        .top-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .top-buttons button {
+            background: transparent;
+            border: 1px solid #777;
+            color: #fff;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .stats-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .stats-text {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .progress-section {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .progress-bar-container span {
+            width: 35px;
+            text-align: left;
+            margin-right: 8px;
+        }
+        .progress-bar {
+            background-color: #3b3f4a;
+            height: 5px;
+            flex: 1; 
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background-color: #4caf50;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .main-content {
+            display: flex;
+            flex: 1;
+            position: relative;
+        }
+        .sidebar {
+            width: 42px;
+            background-color: #1a1c23;
+            border-left: 1px solid #3b3f4a;
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .q-number {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .q-green { background-color: #4caf50; color: white; }
+        .q-blue { 
+            background-color: #1e78d9; 
+            color: white; 
+            position: relative;
+        }
+        .q-blue::before {
+            content: "";
+            position: absolute;
+            left: -7px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-right: 8px solid #1e78d9;
+        }
+        .q-gray { background-color: #48546a; color: white; }
+        .question-area {
+            flex: 1;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            color: #6a9ce0;
+            font-size: 13px;
+            border-bottom: 1px solid #3b3f4a;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+        .question-text {
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+        .option {
+            background-color: #2b2f3a;
+            border: 1px solid #3b3f4a;
+            padding: 12px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .option:hover {
+            background-color: #353a47;
+            border-color: #555;
+        }
+        .option input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0 0 0 12px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #6b7280;
+            background-color: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            position: relative;
+            transition: border-color 0.15s, background-color 0.15s;
+        }
+        .option input[type="radio"]:checked {
+            border-color: #1e78d9;
+            background-color: transparent;
+        }
+        .option input[type="radio"]:checked::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid #1e78d9;
+            background-color: transparent;
+        }
+ 
+        /* ---- الفوتر ---- */
+        footer {
+            padding: 12px 15px;
+            border-top: 1px solid #3b3f4a;
+            background-color: #1e2029;
+            display: flex;
+            gap: 8px;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+        footer button {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            transition: opacity 0.2s;
+        }
+        footer button:active { opacity: 0.8; }
+        .btn-secondary {
+            flex: 1;
+            background-color: transparent;
+            border: 1px solid #777;
+            color: white;
+        }
+        .btn-primary {
+            flex: 2;
+            background-color: #1e78d9;
+            color: white;
+        }
+ 
+        /* ---- شريط تعديل الوقت ---- */
+        .time-slider-bar {
+            background-color: #23262f;
+            border-top: 1px solid #3b3f4a;
+            padding: 12px 15px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .slider-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .slider-label-text {
+            font-size: 11px;
+            color: #888;
+        }
+        .slider-live-value {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            background: #1e78d9;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        input[type="range"]#time-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            background: #3b3f4a;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+        input[type="range"]#time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1e78d9;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 0 6px rgba(30,120,217,0.7);
+        }
+        input[type="range"]#time-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #1e78d9;
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+        .slider-ends {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #555;
+            margin-top: 3px;
+        }
+ 
+        .time-warning { color: #e05050 !important; }
+    </style>
+</head>
+<body>
+ 
+<div class="container">
+    <header>
+        <div class="top-header">
+            <div class="student-name">
+                اسم الطالب
+                <span>ABDULLAH ABDULKAREM SULIMAN ALORAINI</span>
+            </div>
+            <div class="top-buttons">
+                <button>الملخص</button>
+                <button>الأدوات</button>
+            </div>
+        </div>
+        
+        <div class="stats-area">
+            <div class="stats-text">
+                <div id="q-stats-text">الأسئلة -- / --</div>
+                <div id="time-stats-text">الوقت 120 / 120 (دقيقة)</div>
+            </div>
+            <div class="progress-section">
+                <div class="progress-bar-container">
+                    <div class="progress-bar"><div class="progress-fill" id="question-progress-fill"></div></div>
+                    <span id="question-progress-text">--%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar"><div class="progress-fill" id="time-progress-fill" style="width: 0%;"></div></div>
+                    <span id="time-progress-text">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+ 
+    <div class="main-content">
+        <div class="sidebar" id="sidebar"></div>
+        <div class="question-area" id="question-area">
+            <div class="q-header">
+                <span id="q-number-title">س.--</span>
+                <span>اختيارات متعددة</span>
+                <span id="q-grade">درجة السؤال: 1.00</span>
+            </div>
+            <div class="question-text" id="q-text">جاري تحميل السؤال...</div>
+            <div class="options" id="q-options"></div>
+        </div>
+    </div>
+ 
+    <footer>
+        <button class="btn-secondary">علامة السؤال</button>
+        <button class="btn-secondary" id="btn-skip">تخطي</button>
+        <button class="btn-primary" id="btn-next">التالي</button>
+    </footer>
+ 
+    <!-- شريط الوقت السفلي -->
+    <div class="time-slider-bar">
+        <div class="slider-top">
+            <span class="slider-label-text">⏱ ضبط الوقت المتبقي</span>
+            <span class="slider-live-value" id="slider-live-label">120 دقيقة</span>
+        </div>
+        <input type="range" id="time-slider" min="1" max="120" value="120">
+        <div class="slider-ends">
+            <span>1 دقيقة</span>
+            <span>120 دقيقة</span>
+        </div>
+    </div>
+</div>
+ 
+<script>
+    const questions = [
+        {
+            text: "ما التعريف الأدق للقانون الدولي الخاص؟",
+            options: ["مجموعة القواعد التي تنظم العلاقات بين الدول في زمن السلم", "فرع القانون الذي يحكم العلاقات الخاصة ذات العنصر الأجنبي ويحدد القانون الواجب التطبيق والمحكمة المختصة", "القانون الذي يضع حدوداً بين السيادات الوطنية", "القانون الذي ينظم التجارة الدولية بين الشركات متعددة الجنسيات"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المصطلح الذي يُستخدم للإشارة إلى قواعد تنازع القوانين؟",
+            options: ["قواعد الجنسية", "قواعد الإسناد (التنازع)", "قواعد الاختصاص الدولي", "قواعد المعاملة بالمثل"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ 'ضابط الإسناد' في القانون الدولي الخاص؟",
+            options: ["المحكمة المختصة بالنظر في النزاع", "العنصر الواقعي الذي يربط العلاقة القانونية بنظام قانوني معين", "الشخص الأجنبي المرتبط بالدعوى", "الحكم الأجنبي المراد تنفيذه"],
+            correctAnswer: 1
+        },
+        {
+            text: "أيٌّ من التالي يُعدّ من أبرز ضوابط الإسناد الشخصية؟",
+            options: ["موقع المال العقاري", "مكان تنفيذ العقد", "الجنسية أو الموطن", "مكان وقوع الفعل الضار"],
+            correctAnswer: 2
+        },
+        {
+            text: "وفقاً لمعيار الموطن، متى يثبت الموطن للشخص في دولة معينة؟",
+            options: ["عند حصوله على جنسيتها فقط", "عند إقامته المعتادة الدائمة فيها مع نية الاستقرار", "عند ولادته على إقليمها", "عند تسجيل عقاره فيها"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ 'التكييف' في القانون الدولي الخاص؟",
+            options: ["تحديد الدولة صاحبة السيادة على إقليم معين", "تصنيف المسألة القانونية ضمن فئة معينة لتطبيق القاعدة التنازعية المناسبة", "تفسير نصوص العقد وفق القانون المختار", "إعادة صياغة الحكم الأجنبي بما يتوافق مع النظام المحلي"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المبدأ الذي يُبرر رفض تطبيق القانون الأجنبي عندما يتعارض مع القيم الأساسية للنظام القانوني الوطني؟",
+            options: ["مبدأ الإقليمية", "مبدأ النظام العام (Public Policy)", "مبدأ المعاملة بالمثل", "مبدأ الحيازة حسنة النية"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الفرق الجوهري بين 'النظام العام الداخلي' و'النظام العام الدولي'؟",
+            options: ["الأول يسري على الأجانب فقط والثاني على المواطنين فقط", "الأول يمنع الاتفاق على مخالفته داخلياً، بينما الثاني يحول دون تطبيق قانون أجنبي مخالف للقيم الجوهرية", "الأول يطبقه القضاء الدولي والثاني يطبقه القضاء الوطني", "لا فرق بينهما وكلاهما واحد"],
+            correctAnswer: 1
+        },
+        {
+            text: "وفق مبدأ الإقليمية، ما القانون الذي يسري على العقارات الواقعة داخل إقليم الدولة؟",
+            options: ["قانون جنسية المالك", "قانون موقع المال (Lex Situs)", "قانون محكمة النزاع", "قانون الدولة التي أُبرم فيها العقد"],
+            correctAnswer: 1
+        },
+        {
+            text: "أيٌّ من التالي يصف بدقة مفهوم 'الإحالة' (Renvoi) في القانون الدولي الخاص؟",
+            options: ["إحالة القاضي الوطني الدعوى إلى محكمة أجنبية", "إشارة قانون أجنبي بدوره إلى نظام قانوني آخر أو للقانون الوطني مجدداً", "استثناء النظام العام من تطبيق قانون أجنبي", "تعيين المحكمة المختصة بالنزاع الدولي"],
+            correctAnswer: 1
+        },
+        {
+            text: "في منازعات الزواج المختلط الجنسية، ما القانون الأكثر شيوعاً تطبيقاً لتحديد صحة الزواج شكلياً؟",
+            options: ["قانون جنسية الزوج", "قانون مكان انعقاد الزواج (Lex Loci Celebrationis)", "قانون الموطن المشترك للزوجين", "قانون الدولة التي يقيم فيها الأولاد"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المبدأ الذي يُجيز للأطراف اختيار القانون الواجب التطبيق على عقودهم الدولية؟",
+            options: ["مبدأ الأثر المباشر", "مبدأ سلطان الإرادة (Autonomy of Will)", "مبدأ المعاملة الوطنية", "مبدأ الاستحقاق الكامل"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما القيد الجوهري على مبدأ سلطان الإرادة في اختيار القانون الحاكم للعقود؟",
+            options: ["يجب أن يكون العقد مكتوباً دائماً", "لا يجوز أن يتعارض الاختيار مع النظام العام أو القواعد الآمرة", "يجب الحصول على إذن قضائي مسبق", "لا يسري الاختيار على العقود الاستهلاكية بأي حال"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ 'التحايل على القانون' (Fraude à la loi) في القانون الدولي الخاص؟",
+            options: ["تطبيق محكمة أجنبية لقانون وطني مخالف للأعراف الدولية", "تغيير الأطراف عمداً لظرف من ظروف الإسناد كالجنسية أو الموطن للتملص من قانون لا يرغبون فيه", "الإشارة إلى قانون أجنبي لتفسير عقد داخلي", "رفض المحكمة تطبيق قانون ثالث بسبب تعقيد القضية"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الأساس القانوني لاختصاص المحاكم الوطنية بالنظر في المنازعات الدولية الخاصة؟",
+            options: ["مبدأ الأقدمية في رفع الدعوى", "قواعد الاختصاص القضائي الدولي المقررة في التشريع الوطني والمعاهدات الدولية", "مبدأ التوازن الاقتصادي بين الأطراف", "القانون الأصلح للمتهم"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما مفهوم اتفاقية الاختصاص القضائي (Prorogation of Jurisdiction)؟",
+            options: ["اتفاق الأطراف على منح المحكمة اختصاصاً لا تملكه أصلاً في نزاع معين", "إلغاء الاختصاص القضائي لمحكمة بقانون دولي", "تمديد مواعيد التقاضي بقرار قضائي", "إحالة القضية إلى التحكيم الدولي"],
+            correctAnswer: 0
+        },
+        {
+            text: "ما الشروط الأساسية لتنفيذ الحكم الأجنبي في معظم النظم القانونية؟",
+            options: ["أن يصدر من دولة عضو في الأمم المتحدة وأن يكون مترجماً فقط", "صدوره من محكمة مختصة، وحيازته القطعية، وعدم تعارضه مع النظام العام، وصحة التبليغ", "أن يكون مصادقاً عليه من وزارة الخارجية فحسب", "أن يكون صادراً في مادة تجارية دون سواها"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما معنى 'الفصل بين المسائل' (Dépeçage) في العقود الدولية؟",
+            options: ["فصل العقد إلى بنود مستقلة قانوناً تُنفَّذ في دول مختلفة", "تطبيق قوانين مختلفة على أجزاء مختلفة من عقد واحد", "إعادة صياغة العقد وفق قانون المحكمة المختصة", "إلغاء جزء من العقد بسبب تعارضه مع النظام العام"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ Lex Loci Contractus؟",
+            options: ["قانون الدولة التي يُنفَّذ فيها الالتزام الأساسي من العقد", "قانون المكان الذي أُبرم فيه العقد", "قانون الدولة التي يقيم فيها المدين", "قانون دولة العملة المتفق عليها في العقد"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الوثيقة الدولية الأبرز المنظِّمة لتنفيذ أحكام التحكيم الأجنبية؟",
+            options: ["اتفاقية فيينا للبيع الدولي للبضائع 1980", "اتفاقية نيويورك بشأن الاعتراف بقرارات التحكيم الأجنبية وتنفيذها 1958", "اتفاقية واشنطن للتسوية الدولية لمنازعات الاستثمار 1965", "برنامج عمل لاهاي للقانون الدولي الخاص 2000"],
+            correctAnswer: 1
+        },
+        {
+            text: "في نزاع دولي يتعلق بحادث سيارة، ما القانون الذي يحكم المسؤولية التقصيرية في معظم النظم؟",
+            options: ["قانون جنسية المتضرر", "قانون موقع المحكمة المختصة", "قانون مكان وقوع الفعل الضار (Lex Loci Delicti)", "قانون محل إقامة المتسبب في الضرر"],
+            correctAnswer: 2
+        },
+        {
+            text: "ما الفرق بين 'قانون المحكمة' (Lex Fori) و'قانون الموضوع' (Lex Causae)؟",
+            options: ["Lex Fori هو قانون الدولة التي نشأ فيها النزاع، وLex Causae هو قانون دولة التنفيذ", "Lex Fori هو قانون دولة المحكمة الناظرة، وLex Causae هو القانون الأجنبي الذي تشير إليه قاعدة الإسناد لحكم موضوع النزاع", "كلاهما متطابقان في الغالب ولا فرق عملياً بينهما", "Lex Fori يحكم العقود، وLex Causae يحكم الجرائم فقط"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المبدأ الذي يقضي بأن العقد يُفسَّر ضد مصلحة من صاغه عند الغموض؟",
+            options: ["مبدأ الأثر المفيد", "قاعدة Contra Proferentem", "مبدأ الاقتصاد التعاقدي", "قاعدة الحماية المتبادلة بين المتعاقدين"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الفرق بين 'الاختصاص الحصري' و'الاختصاص الاختياري' في القانون الدولي الخاص؟",
+            options: ["الحصري يخص المدعي الأجنبي فقط والاختياري يخص المواطنين", "الحصري لا يجوز للأطراف الاتفاق على خلافه بينما الاختياري يمكن تغييره باتفاق الطرفين", "لا فرق بينهما من الناحية العملية", "الحصري يسري على العقارات فقط والاختياري على المنقولات فقط"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بمبدأ 'المركز الأوثق صلة' (Closest Connection)؟",
+            options: ["تطبيق القانون الأجنبي الأكثر تطوراً قانونياً على النزاع", "تطبيق القانون الذي تربطه أقوى الروابط بالعقد أو الوقائع عند غياب اختيار صريح", "تطبيق قانون الدولة التي يربط طرفيها أطول مدة تجارية", "تطبيق قانون المحكمة دائماً باعتبارها الأقرب للنزاع"],
+            correctAnswer: 1
+        },
+        {
+            text: "في حالة تعدد الجنسيات، ما المبدأ الذي تعتمده أغلب النظم لتحديد القانون الشخصي للشخص؟",
+            options: ["قانون الجنسية الأحدث اكتساباً دائماً", "قانون الجنسية الفعّالة أو الأكثر ارتباطاً (Effective Nationality)", "قانون الدولة التي أسقطت الجنسية الأولى", "قانون الدولة الأعلى دخلاً"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الإشكالية الناشئة عن 'انعدام الجنسية' (Statelessness) في القانون الدولي الخاص؟",
+            options: ["لا توجد إشكالية لأن الشخص يخضع لقانون مقره في كل الأحوال", "تعذُّر تطبيق قاعدة الإسناد المبنية على الجنسية فيُلجأ عادةً إلى قانون الموطن بديلاً", "انعدام أهلية الشخص عديم الجنسية للتقاضي دولياً", "خضوع الشخص عديم الجنسية لقانون دولة المحكمة حصرياً"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما نتيجة تعارض الأحكام بين دولتين صدر في كليهما حكم نهائي في الموضوع نفسه؟",
+            options: ["يُطبَّق الحكم الأجديد تاريخاً دائماً", "تمتنع المحكمة الثانية عن تنفيذ الحكم الأجنبي استناداً إلى مبدأ حجية الشيء المقضي به (Res Judicata)", "يحق للطرف المحكوم عليه اختيار أيهما يُنفَّذ", "يُنفَّذ الحكم الأخف وطأة على المحكوم عليه"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما مبدأ الاستقلالية (Separability) في شروط التحكيم الدولية؟",
+            options: ["جعل شرط التحكيم جزءاً لا يتجزأ من العقد يبطل ببطلانه", "اعتبار شرط التحكيم اتفاقاً مستقلاً لا يتأثر ببطلان العقد الأصلي", "إخضاع شرط التحكيم دائماً لقانون مقر التحكيم", "إلزام المحكمين بتطبيق قانون العقد الأصلي على شرط التحكيم"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المعاهدة الدولية الأبرز في مجال قانون التنازع للعقود في الاتحاد الأوروبي؟",
+            options: ["اتفاقية نيويورك 1958", "اتفاقية روما 1980 (لائحة روما الأولى)", "اتفاقية لاهاي 1961", "اتفاقية البندقية 1975"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ 'مشكلة التوصيف المتعدد' في القانون الدولي الخاص؟",
+            options: ["إشكالية تطبيق قانونين مختلفين على شخص واحد", "حالة تقبل المسألة القانونية الواحدة توصيفها ضمن أكثر من فئة تنازعية تؤدي كل منها إلى تطبيق قانون مختلف", "تعارض نصين قانونيين وطنيين في تنظيم مسألة واحدة", "تضارب اجتهادات القضاء الوطني والتحكيم الدولي"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الفرق بين 'التنفيذ' (Enforcement) و'الاعتراف' (Recognition) بالحكم الأجنبي؟",
+            options: ["كلاهما متطابقان ولا فرق قانوني بينهما", "الاعتراف يعني قبول الحكم كحجة قانونية دون تنفيذ إجباري، بينما التنفيذ يستلزم استخدام السلطة الجبرية لتحقيق مضمونه", "التنفيذ يسبق الاعتراف دائماً زمنياً", "الاعتراف يختص بأحكام الطلاق فقط"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بـ 'مسألة السابق' (Preliminary Question) في القانون الدولي الخاص؟",
+            options: ["السؤال الأول الذي يُوجَّه في جلسة التحكيم الدولي", "مسألة قانونية فرعية يجب حسمها أولاً قبل الفصل في المسألة الرئيسية وقد تخضع لقانون مختلف", "صياغة السؤال القانوني لأغراض التكييف", "الاعتراض الأولي على الاختصاص القضائي"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المبدأ الذي يُلزم القاضي بتطبيق القانون الأجنبي من تلقاء نفسه دون انتظار طلب الأطراف؟",
+            options: ["مبدأ الوجوبية أو التطبيق الوجوبي للقانون الأجنبي", "مبدأ حياد القاضي", "مبدأ المساواة بين المتقاضين", "مبدأ الاقتصاد في الإجراءات"],
+            correctAnswer: 0
+        },
+        {
+            text: "ما المقصود بقانون العلم (Flag Law) في القانون الدولي الخاص البحري؟",
+            options: ["قانون الدولة التي يمر بها المركب عند وقوع الحادث", "قانون دولة تسجيل السفينة التي ترفع علمها", "قانون الدولة التي أُبرمت فيها عقود الشحن", "قانون ميناء الوصول النهائي"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الجهة المختصة بمنح الصيغة التنفيذية للحكم الأجنبي في المملكة العربية السعودية؟",
+            options: ["وزارة الخارجية", "المحكمة التجارية الدولية", "المحكمة المختصة وفق نظام التنفيذ بعد التحقق من الشروط", "ديوان المظالم مباشرة دون شروط"],
+            correctAnswer: 2
+        },
+        {
+            text: "في القانون الدولي الخاص، ما الأثر القانوني لبطلان الإسناد بسبب التحايل على القانون؟",
+            options: ["تُطبَّق المحكمة قانون دولة ثالثة محايدة", "يُستبعد القانون الأجنبي المختار بتحايل وتُطبَّق قاعدة الإسناد الأصلية كما لو لم يتغير الضابط", "يُبطَل العقد برمته بأثر رجعي", "يُكتفى بتوجيه تحذير للأطراف دون أثر مادي"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المعاهدة الدولية الأبرز في مجال المسؤولية الناجمة عن عيوب المنتجات؟",
+            options: ["اتفاقية لاهاي بشأن المسؤولية عن المنتجات 1973", "اتفاقية جنيف للبيع الدولي 1964", "اتفاقية بروكسل لتوحيد الإسناد 1970", "بروتوكول مونتريال للمسؤولية الجوية 1999"],
+            correctAnswer: 0
+        },
+        {
+            text: "ما أبرز خصائص الشخصية القانونية للشركات في نطاق القانون الدولي الخاص؟",
+            options: ["تخضع الشركة لقانون الدولة التي أُبرمت فيها أول صفقاتها", "تخضع الشركة في الغالب لقانون الدولة التي تأسست أو سُجِّلت فيها (قانون الإنشاء)", "تخضع الشركة دائماً لقانون جنسية أغلبية مساهميها", "تخضع الشركة لقانون الدولة التي تقع فيها أصولها الرئيسية"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما الإطار القانوني الدولي المنظِّم لتنازع القوانين في مجال الإرث الدولي وفق قواعد الاتحاد الأوروبي؟",
+            options: ["لائحة روما الأولى 2008", "لائحة الاتحاد الأوروبي رقم 650/2012 (لائحة الإرث الأوروبية)", "اتفاقية لاهاي للإرث 1989", "لائحة بروكسل الثانية المعدَّلة"],
+            correctAnswer: 1
+        },
+        {
+            text: "ما المقصود بمبدأ 'تطابق الإسناد' (Double Actionability) في المسؤولية التقصيرية الدولية؟",
+            options: ["اشتراط أن يكون الفعل الضار مخالفاً لكل من قانون مكان وقوعه وقانون المحكمة معاً لإمكان المطالبة بالتعويض", "اشتراط حكمين قضائيين من دولتين مختلفتين للتنفيذ", "تطابق نص القانونين الوطني والأجنبي على حكم الحادثة", "اشتراط توافر ركن الضرر المادي والمعنوي معاً في ذات الوقت"],
+            correctAnswer: 0
+        }
+    ];
+ 
+    let currentQuestionIndex = 0; 
+    const answersState = new Array(questions.length).fill(false); 
+ 
+    const sidebar        = document.getElementById('sidebar');
+    const qNumberTitle   = document.getElementById('q-number-title');
+    const qText          = document.getElementById('q-text');
+    const qOptions       = document.getElementById('q-options');
+    const btnNext        = document.getElementById('btn-next');
+    const btnSkip        = document.getElementById('btn-skip');
+    const qStatsText     = document.getElementById('q-stats-text');
+    const questionProgressFill = document.getElementById('question-progress-fill');
+    const questionProgressText = document.getElementById('question-progress-text');
+    const timeStatsText  = document.getElementById('time-stats-text');
+    const timeSlider     = document.getElementById('time-slider');
+    const sliderLiveLabel = document.getElementById('slider-live-label');
+    const timeProgressFill = document.getElementById('time-progress-fill');
+    const timeProgressText = document.getElementById('time-progress-text');
+ 
+    // ========== التايمر ==========
+    const TOTAL_MINUTES = 120;
+    let remainingSeconds = TOTAL_MINUTES * 60;
+ 
+    function updateTimerDisplay() {
+        const mins = Math.floor(remainingSeconds / 60);
+        timeStatsText.textContent = `الوقت ${mins} / ${TOTAL_MINUTES} (دقيقة)`;
+ 
+        const elapsedSeconds = (TOTAL_MINUTES * 60) - remainingSeconds;
+        const percent = Math.min(100, Math.round((elapsedSeconds / (TOTAL_MINUTES * 60)) * 100));
+        timeProgressFill.style.width = percent + "%";
+        timeProgressText.textContent = percent + "%";
+ 
+        if (mins <= 5) {
+            timeStatsText.classList.add('time-warning');
+            timeProgressFill.style.backgroundColor = '#e05050';
+        } else {
+            timeStatsText.classList.remove('time-warning');
+            timeProgressFill.style.backgroundColor = '#4caf50';
+        }
+    }
+ 
+    const timerInterval = setInterval(() => {
+        if (remainingSeconds > 0) {
+            remainingSeconds--;
+            updateTimerDisplay();
+            if (!isDragging) {
+                timeSlider.value = Math.ceil(remainingSeconds / 60);
+                sliderLiveLabel.textContent = Math.ceil(remainingSeconds / 60) + ' دقيقة';
+            }
+        } else {
+            clearInterval(timerInterval);
+            timeStatsText.textContent = 'انتهى الوقت!';
+            timeStatsText.classList.add('time-warning');
+            timeProgressFill.style.width = '100%';
+            timeProgressText.textContent = '100%';
+        }
+    }, 1000);
+ 
+    // ========== السلايدر ==========
+    let isDragging = false;
+ 
+    timeSlider.addEventListener('input', () => {
+        isDragging = true;
+        const newMins = parseInt(timeSlider.value);
+        sliderLiveLabel.textContent = newMins + ' دقيقة';
+    });
+ 
+    timeSlider.addEventListener('change', () => {
+        const newMins = parseInt(timeSlider.value);
+        remainingSeconds = newMins * 60;
+        updateTimerDisplay();
+        isDragging = false;
+    });
+ 
+    timeSlider.addEventListener('touchend', () => {
+        const newMins = parseInt(timeSlider.value);
+        remainingSeconds = newMins * 60;
+        updateTimerDisplay();
+        isDragging = false;
+    });
+ 
+    // ========== الأسئلة ==========
+    function loadQuestion(index) {
+        currentQuestionIndex = index;
+        const q = questions[index];
+        const displayIndex = index + 1; 
+ 
+        qNumberTitle.textContent = "س." + displayIndex;
+        qText.textContent = q.text;
+ 
+        qOptions.innerHTML = ''; 
+        q.options.forEach((option, i) => {
+            const label = document.createElement('label');
+            label.className = 'option';
+            label.innerHTML = `<input type="radio" name="answer" value="${i}"> ${option}`;
+            qOptions.appendChild(label);
+        });
+ 
+        updateSidebar();
+        updateStats();
+    }
+ 
+    function updateSidebar() {
+        sidebar.innerHTML = '';
+        for (let i = 0; i < questions.length; i++) {
+            const div = document.createElement('div');
+            div.className = 'q-number';
+            div.textContent = i + 1;
+            if (i === currentQuestionIndex) {
+                div.classList.add('q-blue'); 
+            } else if (answersState[i]) {
+                div.classList.add('q-green'); 
+            } else {
+                div.classList.add('q-gray'); 
+            }
+            div.onclick = () => loadQuestion(i); 
+            sidebar.appendChild(div);
+        }
+    }
+ 
+    function updateStats() {
+        const displayIndex = currentQuestionIndex + 1;
+        qStatsText.textContent = `الأسئلة ${displayIndex} / ${questions.length}`;
+        const progressPercent = Math.round((displayIndex / questions.length) * 100);
+        questionProgressFill.style.width = progressPercent + "%";
+        questionProgressText.textContent = progressPercent + "%";
+    }
+ 
+    btnNext.onclick = () => {
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        if (selectedOption) {
+            answersState[currentQuestionIndex] = true; 
+        }
+        if (currentQuestionIndex < questions.length - 1) {
+            loadQuestion(currentQuestionIndex + 1); 
+        } else {
+            alert("لقد وصلت إلى نهاية الاختبار!");
+            updateSidebar(); 
+        }
+    };
+ 
+    btnSkip.onclick = () => {
+        if (currentQuestionIndex < questions.length - 1) {
+            loadQuestion(currentQuestionIndex + 1); 
+        } else {
+            alert("لا يوجد أسئلة أخرى لتخطيها.");
+        }
+    };
+ 
+    loadQuestion(0);
+</script>
+ 
+</body>
+</html>
